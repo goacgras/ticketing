@@ -1,0 +1,36 @@
+C:\windows\System32\Drivers\etc\hosts
+
+# apiVersion: skaffold/v2beta4
+# kind: Config
+# build:
+#     tagPolicy:
+#         sha256: {}
+#     artifacts:
+#         - image: gcr.io/grasticketing-dev/auth
+#           context: auth
+#           sync:
+#               infer:
+#                   - "src/**/*.ts"
+#               # manual:
+#               #   - src: "src/**/*.ts"
+#               #     dest: .
+
+# deploy:
+#     kubectl:
+#         manifests:
+#             - ./infra/k8s/*
+# profiles:
+#     - name: cloudbuild
+#       build:
+#           googleCloudBuild: { projectId: grasticketing-dev }
+#           artifacts:
+#               - image: gcr.io/grasticketing-dev/auth
+#                 context: auth
+#                 docker:
+#                     dockerfile: Dockerfile
+#                 sync:
+#                     infer:
+#                         - "src/**/*.ts"
+#                     # manual:
+#                     #   - src: "src/**/*.ts"
+#                     #     dest: .

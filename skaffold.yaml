@@ -1,0 +1,27 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+# telling skaffold that there is collections of config files for kubernetes at given location
+deploy:
+    kubectl:
+        # watch these yaml file
+        # automatically reapply config file if there is changes
+        # also create deployments when start & delete when stops
+        manifests:
+            - ./infra/k8s/*
+build:
+    local:
+        # no need to push to docker hub when makes changes
+        push: false
+    artifacts:
+        # to watch the code inside client directory
+        # if there are changes throw to pod
+        # if we make changes outside directory (NOT"src/") then skaffold will rebuild entire image and update depolyment
+        # example: if we add dependency
+        - image: goacgras/auth
+          context: auth
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "src/**/*.ts"
+                    dest: .
