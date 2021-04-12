@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
 
 import { NotFoundError } from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";
@@ -10,7 +11,17 @@ import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
 
 const app = express();
+//trust proxy behind ingress nginx
+app.set("trust proxy", true);
 app.use(express.json());
+app.use(
+    cookieSession({
+        //do not encrypt
+        signed: false,
+        //https only
+        secure: true,
+    })
+);
 
 app.use(currentUserRouter);
 app.use(signinRouter);
