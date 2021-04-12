@@ -1,5 +1,19 @@
 C:\windows\System32\Drivers\etc\hosts
 
+***REMOVE UNUSED IMAGES
+docker system prune -a
+
+
+***STEP FOR GOOGLE CLOUD K8S:
+- create project
+- create k8s cluster
+- gcloud auth
+- connect to cluster
+- change skaffold.yaml
+- install ingress to gke
+- check for load balancer ip in network service
+- run skaffold dev
+
 # apiVersion: skaffold/v2beta4
 # kind: Config
 # build:
