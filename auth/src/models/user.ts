@@ -17,16 +17,30 @@ interface UserDoc extends mongoose.Document {
     password: string;
 }
 
-const userSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
+const userSchema = new mongoose.Schema(
+    {
+        email: {
+            type: String,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
     },
-    password: {
-        type: String,
-        required: true,
-    },
-});
+    {
+        // transform output userschema object
+        toJSON: {
+            // ret is the object of output
+            transform(doc, ret) {
+                ret.id = ret._id;
+                delete ret._id;
+                delete ret.password;
+                delete ret.__v;
+            },
+        },
+    }
+);
 
 //why function? becasue we want to access this keyword
 // if we use arrow it will be over written and apply to this user document

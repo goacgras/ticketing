@@ -3,6 +3,9 @@ C:\windows\System32\Drivers\etc\hosts
 ***REMOVE UNUSED IMAGES
 docker system prune -a
 
+kubectl create secret generic jwt-secret --from-literal=JWT_KEY=goacgrasisthebest
+kubectl get secrets
+
 
 ***STEP FOR GOOGLE CLOUD K8S:
 - create project
