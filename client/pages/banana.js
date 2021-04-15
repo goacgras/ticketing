@@ -1,3 +1,5 @@
-export default () => {
-    return <div>Banana</div>;
+const Banana = () => {
+    return <div>Banana2</div>;
 };
+
+export default Banana;
