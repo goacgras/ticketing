@@ -3,8 +3,16 @@ C:\windows\System32\Drivers\etc\hosts
 ***REMOVE UNUSED IMAGES
 docker system prune -a
 
+***
 kubectl create secret generic jwt-secret --from-literal=JWT_KEY=goacgrasisthebest
 kubectl get secrets
+
+***
+kubectl get services -n "namespace_name"
+kubectl get namespace
+
+***ACCESS FROM FROM DIFFERENT namespace
+http://nameofservice.namespace.svc.cluster.local
 
 
 ***STEP FOR GOOGLE CLOUD K8S:
