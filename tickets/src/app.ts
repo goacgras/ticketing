@@ -1,7 +1,12 @@
 import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
-import { NotFoundError, errorHandler } from "@grasticketing/common";
+import {
+    NotFoundError,
+    errorHandler,
+    currentUser,
+} from "@grasticketing/common";
+import { createTicketRouter } from "./routes/new";
 
 const app = express();
 //trust proxy behind ingress nginx
@@ -15,6 +20,10 @@ app.use(
         secure: process.env.NODE_ENV !== "test",
     })
 );
+//middleware
+app.use(currentUser);
+
+app.use(createTicketRouter);
 
 app.all("*", async () => {
     throw new NotFoundError();

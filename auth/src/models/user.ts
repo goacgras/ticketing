@@ -11,7 +11,7 @@ interface UserModel extends mongoose.Model<UserDoc> {
     build(attrs: UserAttrs): UserDoc;
 }
 
-//addtional properties that mongoose doc has
+//to add addtional properties that mongoose doc has
 interface UserDoc extends mongoose.Document {
     email: string;
     password: string;
@@ -42,6 +42,7 @@ const userSchema = new mongoose.Schema(
     }
 );
 
+//before save, hashed password
 //why function? becasue we want to access this keyword
 // if we use arrow it will be over written and apply to this user document
 userSchema.pre("save", async function (done) {
@@ -53,6 +54,7 @@ userSchema.pre("save", async function (done) {
     done();
 });
 
+//define build function
 userSchema.statics.build = (attrs: UserAttrs) => {
     return new User(attrs);
 };
