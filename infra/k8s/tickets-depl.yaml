@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: tickets-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: tickets
+    template:
+        metadata:
+            labels:
+                app: tickets
+        spec:
+            containers:
+                - name: tickets
+                  image: goacgras/tickets
+                  env:
+                      - name: MONGO_URI
+                        value: "mongodb://tickets-mongo-srv:27017/tickets"
+                      # name of env variable
+                      - name: JWT_KEY
+                        valueFrom:
+                            secretKeyRef:
+                                # name of the secret assign
+                                name: jwt-secret
+                                # name of the key assigned in secret
+                                key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: tickets-srv
+spec:
+    selector:
+        app: tickets
+    # by default iw will create clusterIp
+    # type: clusterIp
+    ports:
+        - name: tickets
+          protocol: TCP
+          port: 3000
+          targetPort: 3000

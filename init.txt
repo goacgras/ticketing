@@ -14,6 +14,9 @@ kubectl get namespace
 ***ACCESS FROM FROM DIFFERENT namespace
 http://nameofservice.namespace.svc.cluster.local
 
+***ACCESS TERMINAL IN POD 
+ k exec -it auth-depl-5cc56d7cdc-7rp46 sh
+
 
 ***STEP FOR GOOGLE CLOUD K8S:
 - create project
@@ -24,6 +27,9 @@ http://nameofservice.namespace.svc.cluster.local
 - install ingress to gke
 - check for load balancer ip in network service
 - run skaffold dev
+
+***CREATE NEW SERVICE:
+246: udemy/Running the ticket service
 
 # apiVersion: skaffold/v2beta4
 # kind: Config

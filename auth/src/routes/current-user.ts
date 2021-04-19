@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
-import jwt from "jsonwebtoken";
-import { currentUser } from "../middlewares/current-user";
+import { currentUser } from "@grasticketing/common";
 
 const router = Router();
 
