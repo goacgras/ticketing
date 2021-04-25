@@ -13,6 +13,8 @@ import { Order } from "../models/order";
 
 const router = Router();
 
+const EXPIRATION_WINDOW_SECONDS = 15 * 60; //15 min
+
 router.post(
     "/api/orders",
     requireAuth,
@@ -34,31 +36,30 @@ router.post(
         }
 
         //Check the ticket status, make sure it is not reserved
-        //Run query to look all orders. Find an order where the ticket,
-        //is the ticket we just found *and* the order status is *not* cancelled
-        //if we find an order from that means the ticket *is* reserved
-        //meaning: find order with status below, if we found, user cant attempt to reserved
-        const existingOrder = await Order.findOne({
-            ticket: ticket,
-            status: {
-                $in: [
-                    OrderStatus.Created,
-                    OrderStatus.Complete,
-                    OrderStatus.AwaitingPayment,
-                ],
-            },
-        });
-        if (existingOrder) {
+        const isReserved = await ticket.isReserved();
+        if (isReserved) {
             throw new BadRequestError("Ticket is already reserved");
         }
 
         //calculate the expiration
+        const expiration = new Date();
+        expiration.setSeconds(
+            expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS
+        );
 
         //build the order and save it to db
+        const order = Order.build({
+            userId: req.currentUser!.id,
+            status: OrderStatus.Created,
+            expiresAt: expiration,
+            ticket,
+        });
+
+        await order.save();
 
         //publish an event
 
-        res.send({});
+        res.status(201).send(order);
     }
 );
 
