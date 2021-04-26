@@ -10,6 +10,8 @@ import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = Router();
 
@@ -58,6 +60,16 @@ router.post(
         await order.save();
 
         //publish an event
+        new OrderCreatedPublisher(natsWrapper.client).publish({
+            id: order.id,
+            expiresAt: order.expiresAt.toISOString(),
+            status: order.status,
+            userId: order.userId,
+            ticket: {
+                id: ticket.id,
+                price: ticket.price,
+            },
+        });
 
         res.status(201).send(order);
     }
