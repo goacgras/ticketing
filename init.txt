@@ -1,3 +1,6 @@
+***RUN SHELL INSIDE MONGO
+kubectl exec -it "deployment name" mongo
+
 C:\windows\System32\Drivers\etc\hosts
 
 ***REMOVE UNUSED IMAGES
