@@ -14,10 +14,11 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
 
     async onMessage(data: TicketUpdatedEvent["data"], msg: Message) {
         // extracting info from data
-        const { title, price } = data;
+        const { id, title, price } = data;
 
         // safe the data / duplicating to Ticket model
         const ticket = Ticket.build({
+            id,
             price,
             title,
         });

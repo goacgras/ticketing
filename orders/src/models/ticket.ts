@@ -3,6 +3,7 @@ import { Order, OrderStatus } from "./order";
 
 //ticket attributes
 interface TicketAttrs {
+    id: string;
     title: string;
     price: number;
 }
@@ -44,7 +45,11 @@ const ticketSchema = new mongoose.Schema(
 
 //statics is how we add new method directly to TicketModel it self
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
-    return new Ticket(attrs);
+    return new Ticket({
+        _id: attrs.id,
+        title: attrs.title,
+        price: attrs.price,
+    });
 };
 
 // add new method to TicketDocument
