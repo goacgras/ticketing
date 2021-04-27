@@ -1,5 +1,9 @@
 ***RUN SHELL INSIDE MONGO
 kubectl exec -it "deployment name" mongo
+- show dbs => check available databases
+- use orders => use orders databases
+- db.tickets => go to tickets model
+- db.tickets.find({}) => run the query
 
 C:\windows\System32\Drivers\etc\hosts
 

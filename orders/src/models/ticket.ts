@@ -21,6 +21,11 @@ export interface TicketDoc extends mongoose.Document {
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
     build(attrs: TicketAttrs): TicketDoc;
+    // method to find by id and version
+    findByEvent(event: {
+        id: string;
+        version: number;
+    }): Promise<TicketDoc | null>;
 }
 
 const ticketSchema = new mongoose.Schema(
@@ -50,7 +55,16 @@ const ticketSchema = new mongoose.Schema(
 ticketSchema.set("versionKey", "version");
 
 // add the plugin
-ticketSchema.plugin(updateIfCurrentPlugin);
+// ticketSchema.plugin(updateIfCurrentPlugin);
+
+// without plugin
+ticketSchema.pre("save", function (done) {
+    // @ts-ignore
+    this.$where = {
+        version: this.get("version") - 1,
+    };
+    done();
+});
 
 //statics is how we add new method directly to TicketModel it self
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
@@ -58,6 +72,14 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
         _id: attrs.id,
         title: attrs.title,
         price: attrs.price,
+    });
+};
+
+// findByEvent method
+ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+    return Ticket.findOne({
+        _id: event.id,
+        version: event.version - 1,
     });
 };
 

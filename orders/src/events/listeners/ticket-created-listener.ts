@@ -22,6 +22,7 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
             price,
             title,
         });
+        //set version to 0
         await ticket.save();
 
         // tell nats we already process the data
