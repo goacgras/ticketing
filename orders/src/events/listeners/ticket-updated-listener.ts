@@ -14,10 +14,11 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
         // if not found
         if (!ticket) throw new Error("Ticket not found");
 
-        const { title, price, version } = data;
+        // add version property to increment without plugin
+        const { title, price } = data;
         // update the ticket
-        // add version to increment without plugin
-        ticket.set({ title, price, version });
+
+        ticket.set({ title, price });
         // when its save, it will increment the version
         await ticket.save();
 

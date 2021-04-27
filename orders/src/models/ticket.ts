@@ -55,16 +55,16 @@ const ticketSchema = new mongoose.Schema(
 ticketSchema.set("versionKey", "version");
 
 // add the plugin
-// ticketSchema.plugin(updateIfCurrentPlugin);
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 // without plugin
-ticketSchema.pre("save", function (done) {
-    // @ts-ignore
-    this.$where = {
-        version: this.get("version") - 1,
-    };
-    done();
-});
+// ticketSchema.pre("save", function (done) {
+//     // @ts-ignore
+//     this.$where = {
+//         version: this.get("version") - 1,
+//     };
+//     done();
+// });
 
 //statics is how we add new method directly to TicketModel it self
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
