@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Order, OrderStatus } from "./order";
 
 //ticket attributes
@@ -12,6 +13,8 @@ interface TicketAttrs {
 export interface TicketDoc extends mongoose.Document {
     title: string;
     price: number;
+    // ticket.version
+    version: number;
     //create a method in TicketDoc
     isReserved(): Promise<boolean>;
 }
@@ -42,6 +45,12 @@ const ticketSchema = new mongoose.Schema(
         },
     }
 );
+
+// set the __v to version
+ticketSchema.set("versionKey", "version");
+
+// add the plugin
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 //statics is how we add new method directly to TicketModel it self
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
