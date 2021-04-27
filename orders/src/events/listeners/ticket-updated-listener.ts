@@ -9,7 +9,10 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
 
     async onMessage(data: TicketUpdatedEvent["data"], msg: Message) {
         //find the ticket
-        const ticket = await Ticket.findById(data.id);
+        const ticket = await Ticket.findOne({
+            _id: data.id,
+            version: data.version - 1,
+        });
 
         // if not found
         if (!ticket) throw new Error("Ticket not found");
@@ -17,6 +20,7 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
         const { title, price } = data;
         // update the ticket
         ticket.set({ title, price });
+        // when its save, it will increment the version
         await ticket.save();
 
         // tell nats we already processed the data
