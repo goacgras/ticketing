@@ -1,9 +1,4 @@
-import {
-    Listener,
-    OrderCancelledEvent,
-    OrderCreatedEvent,
-    Subjects,
-} from "@grasticketing/common";
+import { Listener, OrderCreatedEvent, Subjects } from "@grasticketing/common";
 import { Message } from "node-nats-streaming";
 import { Ticket } from "../../models/ticket";
 import { queueGroupName } from "./queue-group-name";
@@ -12,7 +7,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     readonly subject = Subjects.OrderCreated;
     queueGroupName = queueGroupName;
 
-    async onMessage(data: OrderCancelledEvent["data"], msg: Message) {
+    async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
         // find the ticket that order is reserving
         const ticket = await Ticket.findById(data.ticket.id);
 
