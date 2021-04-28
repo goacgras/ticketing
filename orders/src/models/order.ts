@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { OrderStatus } from "@grasticketing/common";
 import { TicketDoc } from "./ticket";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export { OrderStatus };
 
@@ -15,6 +16,7 @@ interface OrderDoc extends mongoose.Document {
     status: OrderStatus;
     expiresAt: Date;
     ticket: TicketDoc;
+    version: number;
 }
 interface OrderModel extends mongoose.Model<OrderDoc> {
     build(attr: OrderAttrs): OrderDoc;
@@ -49,6 +51,12 @@ const orderSchema = new mongoose.Schema(
         },
     }
 );
+
+// change versionKey to just version
+orderSchema.set("versionKey", "version");
+
+// use auto increment version plugin
+orderSchema.plugin(updateIfCurrentPlugin);
 
 //create additional build func
 orderSchema.statics.build = (attrs: OrderAttrs) => {
