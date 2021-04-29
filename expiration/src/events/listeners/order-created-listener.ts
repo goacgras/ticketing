@@ -8,12 +8,23 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     queueGroupName = queueGroupName;
 
     async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
-        // create new job
-        expirationQueue.add({
-            orderId: data.id,
-        });
+        // calculate the delay
+        // difference between expires and current time in milisecond
+        const delay = new Date(data.expiresAt).getTime() - new Date().getTime();
+        console.log("processing the job..., time in ms: ", delay);
 
-        // acknowledge the event has been revieved
+        // create new job
+        expirationQueue.add(
+            {
+                orderId: data.id,
+            },
+            {
+                //milisecond
+                delay,
+            }
+        );
+
+        // acknowledge the event has been recieved
         msg.ack();
     }
 }
