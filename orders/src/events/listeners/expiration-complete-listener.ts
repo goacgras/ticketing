@@ -20,6 +20,9 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
         // if not found
         if (!order) throw new Error("order not found");
 
+        // if order  has been paid
+        if (order.status === OrderStatus.Complete) return msg.ack();
+
         // change order status & save
         // no need to change the ticket to null because isReserved method
         order.set({ status: OrderStatus.Cancelled });
