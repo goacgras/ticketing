@@ -6,6 +6,7 @@ import {
     errorHandler,
     currentUser,
 } from "@grasticketing/common";
+import { createChargeRouter } from "./routes/new";
 
 const app = express();
 //trust proxy behind ingress nginx
@@ -21,6 +22,9 @@ app.use(
 );
 //middleware
 app.use(currentUser);
+
+// routes
+app.use(createChargeRouter);
 
 app.all("*", async () => {
     throw new NotFoundError();
