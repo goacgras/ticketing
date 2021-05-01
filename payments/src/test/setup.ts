@@ -13,6 +13,11 @@ declare global {
 //mocking natsWrapper
 jest.mock("../nats-wrapper.ts");
 
+// set stripe secret key for stripe realistic test
+// why before, cuz it going to be use the instance on stripe
+process.env.STRIPE_KEY =
+    "sk_test_51IlxhPHTEyf9YdIFPT83jjvRL4LU5GhHXvJvpOH8Bp1i7lIDXPvTKxBoYE6CiGurE2QV7DOKqU9JIUXCDUbbwGBV00E0QM4Eni";
+
 //before start
 let mongo: any;
 beforeAll(async () => {

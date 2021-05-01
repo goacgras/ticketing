@@ -6,7 +6,7 @@ import { OrderStatus } from "@grasticketing/common";
 import { stripe } from "../../stripe";
 
 // use stripe mock fn instead
-jest.mock("../../stripe.ts");
+// jest.mock("../../stripe.ts");
 
 it("returns 404 when purchasing an order that does not exist", async () => {
     await request(app)
@@ -69,11 +69,14 @@ it("return a 201 with valid inputs", async () => {
     // create userId
     const userId = mongoose.Types.ObjectId().toHexString();
 
-    // create a new order
+    // create randomPrice
+    const price = Math.floor(Math.random() * 100000);
+
+    // create a new order with random price above
     const order = Order.build({
         id: mongoose.Types.ObjectId().toHexString(),
         userId,
-        price: 50,
+        price,
         status: OrderStatus.Created,
         version: 0,
     });
@@ -89,11 +92,27 @@ it("return a 201 with valid inputs", async () => {
         })
         .expect(201);
 
-    // get the data
-    const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
+    // ***REAL STRIPE TEST***
+    // get back list of 10 most recent
+    const stripeCharges = await stripe.charges.list({
+        limit: 50,
+    });
 
-    // expects
-    expect(chargeOptions.source).toEqual("tok_visa");
-    expect(chargeOptions.amount).toEqual(50 * 100);
-    expect(chargeOptions.currency).toEqual("usd");
+    // find the specific amount created above
+    const stripeCharge = stripeCharges.data.find((charge) => {
+        return charge.amount === price * 100;
+    });
+
+    // expect
+    expect(stripeCharge).toBeDefined();
+    expect(stripeCharge!.currency).toEqual("usd");
+
+    // ***TEST WITH MOCK***
+    // // get the data
+    // const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
+
+    // // expects
+    // expect(chargeOptions.source).toEqual("tok_visa");
+    // expect(chargeOptions.amount).toEqual(50 * 100);
+    // expect(chargeOptions.currency).toEqual("usd");
 });
