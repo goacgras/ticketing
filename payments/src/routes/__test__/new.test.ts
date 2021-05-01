@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { Order } from "../../models/order";
 import { OrderStatus } from "@grasticketing/common";
 import { stripe } from "../../stripe";
+import { Payment } from "../../models/payment";
 
 // use stripe mock fn instead
 // jest.mock("../../stripe.ts");
@@ -103,9 +104,18 @@ it("return a 201 with valid inputs", async () => {
         return charge.amount === price * 100;
     });
 
-    // expect
+    // expect if the value is not undefined
     expect(stripeCharge).toBeDefined();
     expect(stripeCharge!.currency).toEqual("usd");
+
+    // find the payment
+    const payment = await Payment.findOne({
+        orderId: order.id,
+        stripeId: stripeCharge!.id,
+    });
+
+    // check the payment if not null
+    expect(payment).not.toBeNull();
 
     // ***TEST WITH MOCK***
     // // get the data
