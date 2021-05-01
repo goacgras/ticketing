@@ -6,6 +6,7 @@ import {
     requireAuth,
     validateRequest,
 } from "@grasticketing/common";
+import { stripe } from "../stripe";
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { Order } from "../models/order";
@@ -41,6 +42,12 @@ router.post(
         if (order.status === OrderStatus.Cancelled) {
             throw new BadRequestError("Cannot pay for an cancelled order");
         }
+
+        await stripe.charges.create({
+            currency: "usd",
+            amount: order.price * 100,
+            source: token,
+        });
 
         res.send({ success: true });
     }

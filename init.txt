@@ -1,3 +1,6 @@
+*** STRIPE
+https://stripe.com/docs/api/charges/create
+
 ***RUN SHELL INSIDE MONGO
 kubectl exec -it "deployment name" mongo
 - show dbs => check available databases
@@ -12,6 +15,7 @@ docker system prune -a
 
 ***
 kubectl create secret generic jwt-secret --from-literal=JWT_KEY=goacgrasisthebest
+kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=sk_test_51IlxhPHTEyf9YdIFPT83jjvRL4LU5GhHXvJvpOH8Bp1i7lIDXPvTKxBoYE6CiGurE2QV7DOKqU9JIUXCDUbbwGBV00E0QM4Eni
 kubectl get secrets
 
 ***
