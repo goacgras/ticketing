@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export default function BuildClient({ req }) {
+    // check if we're on server or not
     if (typeof window === "undefined") {
         //on server
         return axios.create({

@@ -6,7 +6,7 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
     return (
         <div>
             <Header currentUser={currentUser} />
-            <Component {...pageProps} />
+            <Component currentUser={currentUser} {...pageProps} />
         </div>
     );
 };
@@ -17,12 +17,18 @@ AppComponent.getInitialProps = async (appContext) => {
 
     let pageProps = {};
 
-    //if a pages has getinitial props, use that!
+    //if a child component has getinitial props, use that!
     if (appContext.Component.getInitialProps) {
         //get initial props in pages below nested in appContext.Component
-        pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+        // we are passing the context, client & currentUser to child's component getInitialProps
+        pageProps = await appContext.Component.getInitialProps(
+            appContext.ctx,
+            client,
+            data.currentUser
+        );
     }
 
+    // get the pageProps and pass down into child component above
     return {
         pageProps,
         ...data,
