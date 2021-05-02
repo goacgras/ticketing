@@ -5,7 +5,7 @@ const Home = ({ currentUser }) => {
 };
 
 // we're passing currentUser property from _app and passes down to child component
-Home.getInitialProps = async (context) => {
+Home.getInitialProps = async (context, client, currentUser) => {
     return {};
 
     // const client = buildClient(context);
