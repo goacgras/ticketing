@@ -1,9 +1,20 @@
 ***GIT COMMAND
+git status
 git add .
 git commit -m [message]
 git remote add origin [link repo]
 git push origin master
+git commit -am "save arezzo files"
+git checkout -b [name]
 
+***after create branch and commit push the branch
+git push origin dev
+
+***
+git pull origin master
+git status
+git add .
+git commit -m [message]
 *** STRIPE
 https://stripe.com/docs/api/charges/create
 
