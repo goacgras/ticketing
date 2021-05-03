@@ -13,6 +13,7 @@ export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
     queueGroupName = queueGroupName;
 
     async onMessage(data: PaymentCreatedEvent["data"], msg: Message) {
+        console.log("OrderId: ", data.orderId);
         // find the order
         const order = await Order.findById(data.orderId);
 
