@@ -1,3 +1,9 @@
+***GIT COMMAND
+git add .
+git commit -m [message]
+git remote add origin [link repo]
+git push origin master
+
 *** STRIPE
 https://stripe.com/docs/api/charges/create
 
