@@ -6,7 +6,8 @@
     "scripts": {
         "start": "ts-node-dev --poll src/index.ts",
         "start2": "nodemon src/index.ts",
-        "test": "jest --watchAll --maxWorkers=25% --no-cache"
+        "test": "jest --watchAll --maxWorkers=25% --no-cache",
+        "test:ci": "jest"
     },
     "jest": {
         "preset": "ts-jest",
