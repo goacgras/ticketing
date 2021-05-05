@@ -24,3 +24,12 @@ jobs:
           DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       - run: docker push goacgras/auth
+      # install doctl to running github container
+      - uses: digitalocean/action-doctl@v2
+        with:
+          # login to DO with token          
+          token: ${{secrets.DIGITALOCEAN_ACCESS_TOKEN}}
+      # get the k8s config from DO           
+      - run: doctl kubernetes cluster kubeconfig save grasticketing
+      # tell deployment to update it self       
+      - run: kubectl rollout restart deployment auth-depl
