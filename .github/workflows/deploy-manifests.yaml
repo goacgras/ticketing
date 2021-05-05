@@ -24,4 +24,4 @@ jobs:
       # get the k8s config from DO           
       - run: doctl kubernetes cluster kubeconfig save grasticketing
       # tell deployment to update it self       
-      - run: kubectl apply -f infra/k8s
+      - run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
