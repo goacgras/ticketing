@@ -1,3 +1,9 @@
+***DOCTL installation
+lesson 480
+
+***CONNECT TO DIGITALOCEAN cluster
+doctl kubernetes cluster kubeconfig save <cluster_name>
+
 ***GIT COMMAND
 git add .
 git commit -m [message]
