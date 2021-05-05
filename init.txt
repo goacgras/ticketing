@@ -9,6 +9,7 @@ git add .
 git commit -m [message]
 git remote add origin [link repo]
 git push origin master
+git checkout -b [branch_name]
 
 *** STRIPE
 https://stripe.com/docs/api/charges/create
