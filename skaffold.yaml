@@ -8,6 +8,7 @@ deploy:
         # also create deployments when start & delete when stops
         manifests:
             - ./infra/k8s/*
+            - ./infra/k8s-dev/*
 build:
     local:
         # no need to push to docker hub when makes changes
