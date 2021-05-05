@@ -1,0 +1,35 @@
+# run this when we merge PR to master
+name: deploy-client
+
+on:
+  # when we merge PR its count as push
+  push:
+    branches:
+      - master
+    # it also run when there is changes in this path
+    paths:
+      - "client/**"
+jobs:
+  # name of the job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout all codes out of repo
+      - uses: actions/checkout@v2
+      # run this command
+      - run: cd client && docker build -t goacgras/client .
+      # login to docker before push
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      - run: docker push goacgras/client
+      # install doctl to running github container
+      - uses: digitalocean/action-doctl@v2
+        with:
+          # login to DO with token
+          token: ${{secrets.DIGITALOCEAN_ACCESS_TOKEN}}
+      # get the k8s config from DO
+      - run: doctl kubernetes cluster kubeconfig save grasticketing
+      # tell deployment to update it self
+      - run: kubectl rollout restart deployment client-depl
