@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: ingress-service
+    # important!
+    # is going to tell ingress-controller abput routing rules
+    annotations:
+        kubernetes.io/ingress.class: nginx
+        # to use regex for wildcard
+        nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+    # to teach ingress-controller how to handle incoming traffic & apply it to pods
+    rules:
+        - host: grasticketing.dev
+          http:
+              # to tell incoming traffic what to do if /posts requested
+              paths:
+                  - path: /api/users/?(.*)
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: auth-srv
+                            port:
+                                number: 3000
+                  - path: /api/tickets/?(.*)
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: tickets-srv
+                            port:
+                                number: 3000
+                  - path: /api/orders/?(.*)
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: orders-srv
+                            port:
+                                number: 3000
+                  - path: /api/payments/?(.*)
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: payments-srv
+                            port:
+                                number: 3000
+                  - path: /?(.*)
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: client-srv
+                            port:
+                                number: 3000
